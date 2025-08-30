@@ -1,8 +1,10 @@
 package com.bernardomerlo.backend_visao_futuro.infra.security;
 
 import com.bernardomerlo.backend_visao_futuro.domain.User;
+import com.bernardomerlo.backend_visao_futuro.domain.Wallet;
 import com.bernardomerlo.backend_visao_futuro.dto.RegisterDTO;
 import com.bernardomerlo.backend_visao_futuro.repository.UserRepository;
+import com.bernardomerlo.backend_visao_futuro.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +21,8 @@ public class AuthenticationService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private WalletRepository walletRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -36,5 +40,7 @@ public class AuthenticationService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(registerDTO.password());
         User user = new User(null, registerDTO.name(), registerDTO.cpf(), registerDTO.email(), encodedPassword);
         userRepository.save(user);
+        Wallet wallet = new Wallet(user, registerDTO.initialBalance());
+        walletRepository.save(wallet);
     }
 }

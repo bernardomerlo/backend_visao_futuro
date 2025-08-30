@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import java.math.BigDecimal;
 
 public record RegisterDTO(
         @NotBlank
@@ -18,6 +20,10 @@ public record RegisterDTO(
         String email,
 
         @NotBlank
-        String password
+        String password,
+
+        @NotBlank
+        @PositiveOrZero
+        BigDecimal initialBalance
 ) {
 }
