@@ -4,6 +4,7 @@ import com.bernardomerlo.backend_visao_futuro.domain.Transaction;
 import com.bernardomerlo.backend_visao_futuro.domain.User;
 import com.bernardomerlo.backend_visao_futuro.domain.Wallet;
 import com.bernardomerlo.backend_visao_futuro.dto.CreateTransactionDTO;
+import com.bernardomerlo.backend_visao_futuro.dto.TransactionResponseDTO;
 import com.bernardomerlo.backend_visao_futuro.enums.TransactionType;
 import com.bernardomerlo.backend_visao_futuro.repository.TransactionRepository;
 import com.bernardomerlo.backend_visao_futuro.repository.WalletRepository;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -37,5 +41,18 @@ public class TransactionService {
 
         Transaction transaction = new Transaction(null, wallet, transactionDTO.description(), transactionDTO.amount(), transactionDTO.type(), transactionDTO.date());
         return transactionRepository.save(transaction);
+    }
+
+    public List<TransactionResponseDTO> getTransactions(User user, LocalDate startDate, LocalDate endDate) {
+        Wallet wallet = walletRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+
+        if(startDate == null || endDate == null){
+            endDate = LocalDate.now();
+            startDate = endDate.minusMonths(1);
+        }
+
+        List<Transaction> transactions = transactionRepository.findAllByWalletAndDateBetweenOrderByDateDesc(wallet, startDate, endDate);
+
+        return transactions.stream().map(TransactionResponseDTO::new).collect(Collectors.toList());
     }
 }
