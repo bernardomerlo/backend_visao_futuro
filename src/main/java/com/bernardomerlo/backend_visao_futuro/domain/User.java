@@ -11,8 +11,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
 
-@Entity(name="Usuario")
-@Table(name="usuarios")
+@Entity(name="User")
+@Table(name="users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank(message="O nome deve ser preenchido")
-    private String nome;
+    private String name;
 
     @NotBlank(message="O cpf deve ser preenchido")
     @Column(unique=true)
@@ -36,8 +36,8 @@ public class User implements UserDetails {
     @Column(unique=true)
     private String email;
 
-    @NotBlank(message="A senha deve ser preenchida")
-    private String senha;
+    @NotBlank(message="A password deve ser preenchida")
+    private String password;
 
 
     @Override
@@ -47,11 +47,11 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.senha;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return this.nome;
+        return this.name;
     }
 }

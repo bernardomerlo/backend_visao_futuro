@@ -15,7 +15,6 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -31,13 +30,11 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public void registerUser(RegisterDTO registerDTO) {
-        System.out.println(registerDTO.email());
         if (userRepository.findByEmail(registerDTO.email()) != null) {
             throw new IllegalArgumentException("Email já cadastrado");
         }
-        System.out.println(registerDTO.senha());
-        String encodedPassword = passwordEncoder.encode(registerDTO.senha());
-        User user = new User(null, registerDTO.nome(), registerDTO.cpf(), registerDTO.email(), encodedPassword);
+        String encodedPassword = passwordEncoder.encode(registerDTO.password());
+        User user = new User(null, registerDTO.name(), registerDTO.cpf(), registerDTO.email(), encodedPassword);
         userRepository.save(user);
     }
 }
