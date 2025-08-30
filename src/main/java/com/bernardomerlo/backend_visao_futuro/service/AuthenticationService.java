@@ -1,4 +1,4 @@
-package com.bernardomerlo.backend_visao_futuro.infra.security;
+package com.bernardomerlo.backend_visao_futuro.service;
 
 import com.bernardomerlo.backend_visao_futuro.domain.User;
 import com.bernardomerlo.backend_visao_futuro.domain.Wallet;
